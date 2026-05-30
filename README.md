@@ -20,7 +20,7 @@ The project trains a sentiment classification model on a Turkish review dataset 
 
 ## Dataset
 
-The repository includes `data/reviews.csv` with 200 Turkish reviews labeled as `positive` or `negative`.
+The repository includes `data/reviews.csv` add your dataset`.
 
 ## Installation
 
