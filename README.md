@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ReviewSense
 
 ReviewSense is an end-to-end machine learning project for movie review sentiment analysis.
