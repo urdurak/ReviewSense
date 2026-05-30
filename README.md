@@ -1,41 +1,156 @@
 # ReviewSense
 
-ReviewSense is a sentiment analysis and fake-review detection application. It provides tools and models to analyze user reviews, detect sentiment (positive/negative/neutral), and flag likely fraudulent or spam reviews.
+ReviewSense is an end-to-end machine learning project for movie review sentiment analysis.
+
+The project trains a sentiment classification model on a Turkish review dataset and serves predictions through a FastAPI REST API.
 
 ## Features
-- Sentiment analysis for product and service reviews
-- Fake review detection using machine learning models
-- Data loading and preprocessing utilities
-- Training and evaluation scripts
 
-## Getting Started
-These instructions will help you run the project locally for development and testing.
+- Movie review sentiment classification
+- Text cleaning and preprocessing
+- HTML tag removal
+- TF-IDF vectorization
+- Logistic Regression classifier
+- Model evaluation with accuracy, precision, recall and F1-score
+- Saved model with Joblib
+- REST API with FastAPI
+- Local prediction script
+- Interactive Swagger documentation
 
-Prerequisites
-- Python 3.8+
-- Install dependencies:
+## Dataset
 
-	pip install -r requirements.txt
+The repository includes `data/reviews.csv` with 200 Turkish reviews labeled as `positive` or `negative`.
 
-Run examples
-- Start a quick experiment in `notebooks/` or run the training entrypoint:
+## Installation
 
-	python reviewsense/main.py
+Create virtual environment:
 
-## Repository Structure
-- `data/` — datasets and preprocessed files
-- `models/` — trained model artifacts
-- `notebooks/` — exploratory notebooks and demos
-- `reviewsense/` — core package and scripts
-- `src/` — additional source code
-- `tests/` — unit and integration tests
+```powershell
+python -m venv venv
+```
 
-## Contributing
-Contributions are welcome. Please open issues or pull requests with bug reports, improvements, or new features.
+Activate virtual environment on Windows:
+
+```powershell
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```powershell
+pip install -r requirements.txt
+```
+
+## Train the Model
+
+```powershell
+python src/train.py
+```
+
+This command:
+
+- loads the dataset from `data/reviews.csv` (or falls back to `data/imdb_reviews.csv` if present)
+- cleans review texts
+- trains the TF-IDF + Logistic Regression model
+- evaluates model performance
+- saves the model to `models/sentiment_model.pkl`
+
+## Run Local Prediction
+
+```powershell
+python src/predict.py
+```
+
+Example output:
+
+```json
+{
+  "review": "This movie was amazing. The story and acting were excellent.",
+  "sentiment": "positive",
+  "confidence": 0.9015,
+  "probabilities": {
+    "negative": 0.0985,
+    "positive": 0.9015
+  }
+}
+```
+
+## Run the API
+
+```powershell
+uvicorn api.main:app --reload
+```
+
+Open Swagger UI:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+## API Usage
+
+Endpoint:
+
+```http
+POST /predict
+```
+
+Request:
+
+```json
+{
+  "review": "This movie was boring and terrible."
+}
+```
+
+Response:
+
+```json
+{
+  "sentiment": "negative",
+  "confidence": 0.9947,
+  "probabilities": {
+    "negative": 0.9947,
+    "positive": 0.0053
+  }
+}
+```
+
+## How It Works
+
+ReviewSense uses a classic machine learning pipeline:
+
+```text
+Raw review text
+↓
+Text cleaning
+↓
+TF-IDF vectorization
+↓
+Logistic Regression classifier
+↓
+Sentiment prediction
+```
+
+## Technologies
+
+- Python
+- Pandas
+- Scikit-learn
+- FastAPI
+- Uvicorn
+- Joblib
+- Pydantic
+
+## Future Improvements
+
+- Add neutral sentiment class
+- Add Docker support
+- Add automated tests
+- Add web interface
+- Deploy API
+- Integrate with a movie review website
 
 ## License
-This project is provided under the terms in the `LICENSE` file.
 
----
-
-Bu proje Türkçe içerikli olup İngilizce açıklama GitHub gösterimi için eklendi.
+This project is for educational and portfolio purposes.
